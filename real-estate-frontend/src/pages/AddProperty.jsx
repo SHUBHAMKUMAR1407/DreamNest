@@ -44,7 +44,7 @@ const AddProperty = () => {
         images: ["/images/house1.jpg", "/images/house2.jpg"]
       };
 
-      const response = await fetch("http://localhost:5000/api/properties", {
+      const response = await fetch("https://dream-nest-flame.vercel.app/api/properties", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
