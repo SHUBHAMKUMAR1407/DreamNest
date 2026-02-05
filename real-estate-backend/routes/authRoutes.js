@@ -54,7 +54,7 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("FRONTEND SE AAYA:", { email, password }); 
+    console.log("FRONTEND SE AAYA:", { email, password });
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -67,7 +67,7 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
     console.log("PASSWORD MATCH:", isMatch);
-    
+
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
@@ -91,21 +91,28 @@ router.post("/login", async (req, res) => {
 
 router.post("/forgot-password", async (req, res) => {
   try {
-    const { email } = req.body;  
-    if (!email) {
-      return res.status(400).json({ message: "Email is required" });
+    const { email, newPassword } = req.body;
+    if (!email || !newPassword) {
+      return res.status(400).json({ message: "Email and new password are required" });
     }
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
-    console.log("Password forgot requested for:", email);
+    // Hash new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    console.log("Password reset successful for:", email);
 
     res.status(200).json({
       success: true,
-      message: "Password reset link sent to your email"
+      message: "Password reset successfully"
     });
 
   } catch (err) {

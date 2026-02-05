@@ -17,20 +17,45 @@ const PropertyDetails = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setSubmitStatus(null);
 
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitStatus("success");
-      setFormData({ name: "", email: "", message: "" });
+    try {
+      const response = await fetch("http://localhost:5000/api/inquiries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          propertyId: property.id,
+          propertyTitle: property.title,
+          agentName: property.agent.name
+        }),
+      });
 
-      // Clear success message after 3 seconds
-      setTimeout(() => setSubmitStatus(null), 5000);
-    }, 1500);
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus("success");
+        setFormData({ name: "", email: "", message: "" });
+        // Clear success message after 5 seconds
+        setTimeout(() => setSubmitStatus(null), 5000);
+      } else {
+        setSubmitStatus("error");
+        alert(data.message || "Something went wrong.");
+      }
+    } catch (error) {
+      console.error("Error submitting inquiry:", error);
+      setSubmitStatus("error");
+      alert("Failed to connect to server.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Mock Data (simulating API response)

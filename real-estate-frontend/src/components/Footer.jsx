@@ -9,17 +9,33 @@ const Footer = () => {
   // Hide on Admin Dashboard
   if (location.pathname === "/admin") return null;
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email) return;
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubscribed(true);
-      setEmail("");
-      // Reset after 5 seconds so they can see the input again if they want
-      setTimeout(() => setIsSubscribed(false), 5000);
-    }, 500);
+    try {
+      const response = await fetch("http://localhost:5000/api/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setIsSubscribed(true);
+        setEmail("");
+        // Reset after 5 seconds so they can see the input again if they want
+        setTimeout(() => setIsSubscribed(false), 5000);
+      } else {
+        alert(data.message || "Something went wrong.");
+      }
+    } catch (error) {
+      console.error("Error subscribing:", error);
+      alert("Failed to connect to server.");
+    }
   };
 
   return (

@@ -3,7 +3,7 @@ const Property = require("../models/Property");
 // Create a new property
 exports.createProperty = async (req, res) => {
     try {
-        const { title, description, price, location, type, beds, baths, sqft } = req.body;
+        const { title, description, price, location, type, beds, baths, sqft, furnishing } = req.body;
 
         const newProperty = await Property.create({
             title,
@@ -14,6 +14,7 @@ exports.createProperty = async (req, res) => {
             beds,
             baths,
             sqft,
+            furnishing,
             agent: req.user ? req.user.id : null // Link to agent if logged in
         });
 

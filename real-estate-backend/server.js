@@ -19,6 +19,9 @@ app.use(cors()); // Enable CORS
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/properties", require("./routes/propertyRoutes"));
+app.use("/api/contact", require("./routes/contactRoutes"));
+app.use("/api/inquiries", require("./routes/inquiryRoutes"));
+app.use("/api/subscribe", require("./routes/subscriberRoutes"));
 
 // Root Route
 app.get("/", (req, res) => {

@@ -38,6 +38,10 @@ const propertySchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    furnishing: {
+        type: String,
+        default: "Unfurnished",
+    },
     images: [String], // Array of image URLs
     agent: {
         type: mongoose.Schema.Types.ObjectId,

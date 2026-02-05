@@ -1,4 +1,49 @@
+import React, { useState } from 'react';
+
 const ContactUs = () => {
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        subject: "",
+        message: ""
+    });
+    const [status, setStatus] = useState({ type: "", message: "" });
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus({ type: "loading", message: "Sending..." });
+
+        try {
+            const response = await fetch("http://localhost:5000/api/contact", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    phone: "", // Optional field in backend, sending empty string or could map subject here? Logic: sending empty for now.
+                    message: `Subject: ${formData.subject}\n\n${formData.message}`
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setStatus({ type: "success", message: "Message sent successfully!" });
+                setFormData({ name: "", email: "", subject: "", message: "" });
+            } else {
+                setStatus({ type: "error", message: data.message || "Something went wrong." });
+            }
+        } catch (error) {
+            setStatus({ type: "error", message: "Failed to connect to server." });
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 pt-20">
 
@@ -82,22 +127,36 @@ const ContactUs = () => {
                     <div className="p-12 md:w-3/5 bg-white">
                         <h3 className="text-3xl font-bold text-slate-900 mb-8 font-serif">Send us a Message</h3>
 
-                        <form className="space-y-6">
+                        {status.message && (
+                            <div className={`mb-6 p-4 rounded-lg ${status.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                                {status.message}
+                            </div>
+                        )}
+
+                        <form className="space-y-6" onSubmit={handleSubmit}>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <label className="text-sm font-bold text-slate-700 block uppercase tracking-wider">Your Name</label>
                                     <input
                                         type="text"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
                                         placeholder="John Doe"
                                         className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-lg focus:bg-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all placeholder-stone-400"
+                                        required
                                     />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-bold text-slate-700 block uppercase tracking-wider">Your Email</label>
                                     <input
                                         type="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
                                         placeholder="john@example.com"
                                         className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-lg focus:bg-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all placeholder-stone-400"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -106,25 +165,34 @@ const ContactUs = () => {
                                 <label className="text-sm font-bold text-slate-700 block uppercase tracking-wider">Subject</label>
                                 <input
                                     type="text"
+                                    name="subject"
+                                    value={formData.subject}
+                                    onChange={handleChange}
                                     placeholder="I'm interested in..."
                                     className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-lg focus:bg-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all placeholder-stone-400"
+                                    required
                                 />
                             </div>
 
                             <div className="space-y-2">
                                 <label className="text-sm font-bold text-slate-700 block uppercase tracking-wider">Message</label>
                                 <textarea
+                                    name="message"
+                                    value={formData.message}
+                                    onChange={handleChange}
                                     rows="5"
                                     placeholder="Tell us more about your requirements..."
                                     className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-lg focus:bg-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none transition-all resize-none placeholder-stone-400"
+                                    required
                                 ></textarea>
                             </div>
 
                             <button
                                 type="submit"
-                                className="w-full md:w-auto px-8 py-4 bg-slate-900 text-white font-bold rounded-xl shadow-lg hover:bg-amber-600 transition-all duration-300 uppercase tracking-widest text-sm hover:shadow-amber-900/20 hover:-translate-y-1"
+                                disabled={status.type === 'loading'}
+                                className="w-full md:w-auto px-8 py-4 bg-slate-900 text-white font-bold rounded-xl shadow-lg hover:bg-amber-600 transition-all duration-300 uppercase tracking-widest text-sm hover:shadow-amber-900/20 hover:-translate-y-1 disabled:opacity-70 disabled:cursor-not-allowed"
                             >
-                                Send Message
+                                {status.type === 'loading' ? 'Sending...' : 'Send Message'}
                             </button>
                         </form>
                     </div>
