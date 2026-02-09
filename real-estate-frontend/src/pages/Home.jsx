@@ -9,7 +9,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/properties");
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties`);
         const data = await response.json();
         // Get top 3 properties
         setFeaturedProperties(data.slice(0, 3));

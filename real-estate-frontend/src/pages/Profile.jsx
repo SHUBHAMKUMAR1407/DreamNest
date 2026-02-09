@@ -256,7 +256,7 @@ const MyListings = () => {
         const fetchMyProperties = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const res = await fetch("http://localhost:5000/api/properties/user/my-properties", {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/properties/user/my-properties`, {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
                 const data = await res.json();
@@ -274,7 +274,7 @@ const MyListings = () => {
         if (!confirm("Are you sure you want to delete this property?")) return;
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch(`http://localhost:5000/api/properties/${id}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/properties/${id}`, {
                 method: "DELETE",
                 headers: { "Authorization": `Bearer ${token}` }
             });

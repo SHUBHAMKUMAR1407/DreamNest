@@ -18,7 +18,7 @@ const ContactUs = () => {
         setStatus({ type: "loading", message: "Sending..." });
 
         try {
-            const response = await fetch("http://localhost:5000/api/contact", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contact`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

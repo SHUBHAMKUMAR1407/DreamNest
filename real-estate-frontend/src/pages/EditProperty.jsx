@@ -25,7 +25,7 @@ const EditProperty = () => {
     useEffect(() => {
         const fetchProperty = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/properties/${id}`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties/${id}`);
                 const data = await response.json();
 
                 if (response.ok) {
@@ -114,7 +114,7 @@ const EditProperty = () => {
                 data.append("images", images[i]);
             }
 
-            const response = await fetch(`http://localhost:5000/api/properties/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties/${id}`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`

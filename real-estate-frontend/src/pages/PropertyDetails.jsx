@@ -19,7 +19,7 @@ const PropertyDetails = () => {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/properties/${id}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties/${id}`);
         if (!response.ok) throw new Error("Property not found");
         const data = await response.json();
         setProperty(data);
@@ -43,7 +43,7 @@ const PropertyDetails = () => {
     setSubmitStatus(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/inquiries", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/inquiries`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

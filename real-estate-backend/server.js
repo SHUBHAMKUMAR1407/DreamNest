@@ -16,7 +16,7 @@ const app = express();
 app.use(express.json()); // Body parser
 app.use(cors({
   origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: false
 })); // Enable CORS for all origins
 
