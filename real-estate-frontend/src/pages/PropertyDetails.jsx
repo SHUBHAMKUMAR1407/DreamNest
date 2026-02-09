@@ -292,10 +292,12 @@ const PropertyDetails = () => {
                     </form>
                   )}
 
-                  <div className="mt-6 pt-6 border-t border-slate-100 text-center">
-                    <p className="text-slate-500 text-sm">Prefer to call?</p>
-                    <p className="text-lg font-bold text-slate-800 mt-1">{property.agent.phone}</p>
-                  </div>
+                  {property.agent && property.agent.phone && (
+                    <div className="mt-6 pt-6 border-t border-slate-100 text-center">
+                      <p className="text-slate-500 text-sm">Prefer to call?</p>
+                      <p className="text-lg font-bold text-slate-800 mt-1">{property.agent.phone}</p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
