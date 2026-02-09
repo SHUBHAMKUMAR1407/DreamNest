@@ -14,11 +14,21 @@ const app = express();
 
 // Middleware
 app.use(express.json()); // Body parser
+
+// CORS Configuration
 app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  credentials: false
-})); // Enable CORS for all origins
+  origin: function(origin, callback) {
+    // Allow all origins
+    callback(null, true);
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+  optionsSuccessStatus: 200
+}));
+
+// Handle preflight requests
+app.options('*', cors());
 
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));
