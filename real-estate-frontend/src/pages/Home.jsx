@@ -1,44 +1,28 @@
 import { Link } from "react-router-dom";
 import PropertyCard from "../components/PropertyCard";
-
-// Mock data for featured properties section
-const featuredProperties = [
-  {
-    id: 1,
-    title: "Aliva Priva Jardin",
-    price: "$350,000",
-    address: "1088, Jakarta, Indonesia",
-    beds: 3,
-    baths: 2,
-    sqft: 1200,
-    image: "/images/house1.jpg",
-    type: "For Sell"
-  },
-  {
-    id: 2,
-    title: "Asatti Garden City",
-    price: "$550,000",
-    address: "66, Bandung, Indonesia",
-    beds: 4,
-    baths: 3,
-    sqft: 2200,
-    image: "/images/house2.jpg",
-    type: "For Rent"
-  },
-  {
-    id: 3,
-    title: "Citralan Puri Serang",
-    price: "$600,000",
-    address: "102, Surabaya, Indonesia",
-    beds: 5,
-    baths: 3,
-    sqft: 2800,
-    image: "/images/house3.jpg",
-    type: "For Sell"
-  }
-];
+import { useEffect, useState } from "react";
 
 const Home = () => {
+  const [featuredProperties, setFeaturedProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/properties");
+        const data = await response.json();
+        // Get top 3 properties
+        setFeaturedProperties(data.slice(0, 3));
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProperties();
+  }, []);
+
   return (
     <div className="min-h-screen bg-stone-50">
       {/* Hero Section */}
@@ -94,11 +78,17 @@ const Home = () => {
           <h2 className="text-4xl font-bold mt-3 text-slate-900 font-serif">Popular Residencies</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {featuredProperties.map((item) => (
-            <PropertyCard key={item.id} property={item} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-600"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {featuredProperties.map((item) => (
+              <PropertyCard key={item._id} property={item} />
+            ))}
+          </div>
+        )}
 
         <div className="text-center mt-16">
           <Link to="/listings">
