@@ -10,6 +10,8 @@ router.get("/users", require("../controllers/authController").getAllUsers);
 router.put("/profile", authMiddleware, require("../controllers/authController").updateProfile);
 
 
+
+
 router.post("/signup", async (req, res) => {
   try {
     const { name, email, password, phone, role } = req.body;
