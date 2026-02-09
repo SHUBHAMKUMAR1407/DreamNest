@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -18,6 +19,23 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [inquiries, setInquiries] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Modal State
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    onConfirm: () => { },
+    type: "info" // 'info' or 'danger'
+  });
+
+  const openModal = (title, message, onConfirm, type = "info") => {
+    setModalConfig({ isOpen: true, title, message, onConfirm, type });
+  };
+
+  const closeModal = () => {
+    setModalConfig({ ...modalConfig, isOpen: false });
+  };
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -65,6 +83,7 @@ const AdminDashboard = () => {
 
     } catch (error) {
       console.error("Error fetching admin data:", error);
+      toast.error("Failed to load dashboard data");
     } finally {
       setLoading(false);
     }
@@ -229,42 +248,55 @@ const AdminDashboard = () => {
                         <td className="px-6 py-4 text-sm text-slate-500">{new Date(item.createdAt).toLocaleDateString()}</td>
                         <td className="px-6 py-4 text-right flex justify-end gap-2">
                           <button
-                            onClick={async () => {
-                              if (!confirm("Approve this property?")) return;
-                              try {
-                                const token = localStorage.getItem("token");
-                                const res = await fetch(`${API_URL}/api/properties/${item._id}/approve`, {
-                                  method: "PUT",
-                                  headers: { "Authorization": `Bearer ${token}` }
-                                });
-                                if (res.ok) {
-                                  const updated = await res.json();
-                                  // Update local state
-                                  setProperties(properties.map(p => p._id === item._id ? { ...p, status: 'Approved' } : p));
-                                } else {
-                                  alert("Failed to approve");
-                                }
-                              } catch (e) { alert("Error approving"); }
+                            onClick={() => {
+                              openModal(
+                                "Approve Property",
+                                "Are you sure you want to approve this property listing?",
+                                async () => {
+                                  try {
+                                    const token = localStorage.getItem("token");
+                                    const res = await fetch(`${API_URL}/api/properties/${item._id}/approve`, {
+                                      method: "PUT",
+                                      headers: { "Authorization": `Bearer ${token}` }
+                                    });
+                                    if (res.ok) {
+                                      const updated = await res.json();
+                                      setProperties(properties.map(p => p._id === item._id ? { ...p, status: 'Approved' } : p));
+                                      toast.success("Property approved successfully");
+                                    } else {
+                                      toast.error("Failed to approve property");
+                                    }
+                                  } catch (e) { toast.error("Error processing approval"); }
+                                },
+                                "info"
+                              );
                             }}
                             className="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-bold hover:bg-green-200 transition-colors"
                           >
                             Approve
                           </button>
                           <button
-                            onClick={async () => {
-                              if (!confirm("Reject (Delete) this property?")) return;
-                              try {
-                                const token = localStorage.getItem("token");
-                                const res = await fetch(`${API_URL}/api/properties/${item._id}`, {
-                                  method: "DELETE",
-                                  headers: { "Authorization": `Bearer ${token}` }
-                                });
-                                if (res.ok) {
-                                  setProperties(properties.filter(p => p._id !== item._id));
-                                } else {
-                                  alert("Failed to delete");
-                                }
-                              } catch (e) { alert("Error deleting"); }
+                            onClick={() => {
+                              openModal(
+                                "Reject Property",
+                                "This will permanently delete the property. Cannot be undone.",
+                                async () => {
+                                  try {
+                                    const token = localStorage.getItem("token");
+                                    const res = await fetch(`${API_URL}/api/properties/${item._id}`, {
+                                      method: "DELETE",
+                                      headers: { "Authorization": `Bearer ${token}` }
+                                    });
+                                    if (res.ok) {
+                                      setProperties(properties.filter(p => p._id !== item._id));
+                                      toast.success("Property rejected and removed");
+                                    } else {
+                                      toast.error("Failed to reject property");
+                                    }
+                                  } catch (e) { toast.error("Error processing rejection"); }
+                                },
+                                "danger"
+                              );
                             }}
                             className="px-3 py-1 bg-red-100 text-red-700 rounded-lg text-xs font-bold hover:bg-red-200 transition-colors"
                           >
@@ -318,8 +350,22 @@ const AdminDashboard = () => {
                       <td className="px-6 py-4 text-sm text-slate-500">{item.type}</td>
                       <td className="px-6 py-4 text-sm text-slate-500">{new Date(item.createdAt).toLocaleDateString()}</td>
                       <td className="px-6 py-4 text-right">
-                        <button className="text-slate-400 hover:text-amber-500 mr-2">Edit</button>
-                        <button className="text-slate-400 hover:text-red-500">Delete</button>
+                        <Link to={`/properties/edit/${item._id}`} className="text-slate-400 hover:text-amber-500 mr-2 font-medium">Edit</Link>
+                        <button
+                          className="text-slate-400 hover:text-red-500"
+                          onClick={() => {
+                            openModal(
+                              "Delete Property",
+                              "Are you sure? This action cannot be undone.",
+                              async () => {
+                                // Add delete logic for admin 'Properties' tab here if needed,
+                                // currently mimicking the 'Reject' logic or placeholder
+                                toast.success("Delete functionality coming soon for this tab");
+                              },
+                              "danger"
+                            );
+                          }}
+                        >Delete</button>
                       </td>
                     </tr>
                   ))}
@@ -413,9 +459,9 @@ const AdminDashboard = () => {
                   localStorage.setItem("user", JSON.stringify(data));
                   if (data.token) localStorage.setItem("token", data.token);
 
-                  alert("Profile updated successfully!");
+                  toast.success("Profile updated successfully!");
                 } catch (err) {
-                  alert(err.message);
+                  toast.error(err.message || "Failed to update profile");
                 }
               }} className="space-y-6">
 
@@ -611,8 +657,46 @@ const AdminDashboard = () => {
           to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
+
+      {/* Classic Confirmation Modal */}
+      {modalConfig.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onClick={closeModal}></div>
+          <div className="relative bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all border border-stone-200">
+            <div className="h-1 bg-gradient-to-r from-amber-400 to-amber-600"></div>
+            <div className="p-8 text-center">
+              <div className="mb-4 mx-auto w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
+                <span className="text-2xl">⚠️</span>
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2 font-serif">{modalConfig.title}</h3>
+              <p className="text-slate-600 mb-8">{modalConfig.message}</p>
+
+              <div className="flex gap-4 justify-center">
+                <button
+                  onClick={closeModal}
+                  className="px-6 py-2.5 rounded-lg border border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 transition-colors uppercase text-sm tracking-wide"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    modalConfig.onConfirm();
+                    closeModal();
+                  }}
+                  className={`px-8 py-2.5 rounded-lg font-bold text-white shadow-lg transition-all transform hover:-translate-y-0.5 uppercase text-sm tracking-wide ${modalConfig.type === 'danger' ? 'bg-red-600 hover:bg-red-700 shadow-red-200' : 'bg-slate-900 hover:bg-amber-600 shadow-slate-200'
+                    }`}
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
 
 export default AdminDashboard;
+

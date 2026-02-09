@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Login = () => {
     const [email, setEmail] = useState("admin@dreamnest.com");
     const [password, setPassword] = useState("admin123");
-    const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        setError("");
         setLoading(true);
 
         try {
@@ -35,10 +34,12 @@ const Login = () => {
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
 
+            toast.success("Welcome back, Admin!");
+
             // Redirect
             navigate("/dashboard");
         } catch (err) {
-            setError(err.message);
+            toast.error(err.message || "Something went wrong");
         } finally {
             setLoading(false);
         }
@@ -59,15 +60,6 @@ const Login = () => {
 
                 <div className="p-8 pt-6">
                     <h2 className="text-2xl font-bold text-slate-800 text-center mb-6">Welcome Back</h2>
-
-                    {error && (
-                        <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-6 flex items-center justify-center border border-red-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                            </svg>
-                            {error}
-                        </div>
-                    )}
 
                     <form onSubmit={handleLogin} className="space-y-5">
                         <div>

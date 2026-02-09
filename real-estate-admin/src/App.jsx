@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import React from "react";
 import AdminDashboard from "./pages/AdminDashboard";
 import Login from "./pages/Login";
+import EditProperty from "./pages/EditProperty";
 import "./index.css";
 
 // Protected Route Component
@@ -19,6 +21,7 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   return (
     <Router>
+      <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/login" element={<Login />} />
 
@@ -36,6 +39,14 @@ function App() {
           element={
             <ProtectedRoute>
               <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/properties/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditProperty />
             </ProtectedRoute>
           }
         />

@@ -117,16 +117,9 @@ const PropertyDetails = () => {
 
         {/* 2. Image Gallery (Grid Layout) */}
         {property.images && property.images.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12 shadow-2xl rounded-xl overflow-hidden border-4 border-white bg-white p-2">
-            <div className="h-[400px] md:h-[500px] overflow-hidden rounded-lg group cursor-pointer">
-              <img src={property.images[0]} alt="Main View" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-            </div>
-            <div className="grid grid-cols-2 gap-4 h-[400px] md:h-[500px]">
-              {property.images.slice(1, 5).map((img, idx) => (
-                <div key={idx} className="h-full overflow-hidden rounded-lg group cursor-pointer">
-                  <img src={img} alt={`View ${idx + 2}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                </div>
-              ))}
+          <div className="mb-12 shadow-2xl rounded-xl overflow-hidden border-4 border-white bg-white p-2">
+            <div className="h-[400px] md:h-[600px] overflow-hidden rounded-lg group cursor-pointer">
+              <img src={property.images[0]} alt={property.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
             </div>
           </div>
         )}

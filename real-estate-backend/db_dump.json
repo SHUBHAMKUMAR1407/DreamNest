@@ -1,0 +1,89 @@
+[
+  {
+    "_id": "698a056b825be1601aca3ca7",
+    "title": "3bhk",
+    "images": []
+  },
+  {
+    "_id": "698a1aad1c0391f3f1f0c1d4",
+    "title": "2bhk",
+    "images": []
+  },
+  {
+    "_id": "698a25c1a3a4661869dea517",
+    "title": "HelloJI",
+    "images": []
+  },
+  {
+    "_id": "698a29cc1fa87e809a9bc0af",
+    "title": "THE House",
+    "images": [
+      "https://res.cloudinary.com/drhkqc0cm/image/upload/v1770662348/real-estate-properties/ldehr0wixzfdvbwbddus.jpg"
+    ]
+  },
+  {
+    "_id": "698a3708b05d984892d3b111",
+    "title": "Luxury Villa in Mumbai",
+    "images": [
+      "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1600596542815-2a4d9fddace7?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    "_id": "698a3708b05d984892d3b114",
+    "title": "Modern Apartment in Bangalore",
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    "_id": "698a3708b05d984892d3b117",
+    "title": "Cozy Cottage in Manali",
+    "images": [
+      "https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    "_id": "698a375b457be59eca2d002b",
+    "title": "Seaview Penthouse in Goa",
+    "images": [
+      "https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    "_id": "698a375b457be59eca2d002e",
+    "title": "Urban Loft in Delhi",
+    "images": [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a1c002085d2f?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    "_id": "698a37ad066b5b0610dbc98f",
+    "title": "Royal Haveli in Jaipur",
+    "images": [
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b91d?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    "_id": "698a37ad066b5b0610dbc992",
+    "title": "Tech Hub Villa in Hyderabad",
+    "images": [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=800&q=80"
+    ]
+  },
+  {
+    "_id": "698a37ae066b5b0610dbc995",
+    "title": "Backwater Retreat in Kerala",
+    "images": [
+      "https://images.unsplash.com/photo-1599809275372-b4036fa2c8f8?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80"
+    ]
+  }
+]
