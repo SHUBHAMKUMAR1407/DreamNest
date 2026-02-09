@@ -65,25 +65,7 @@ const Home = () => {
             Buy, rent, and sell with confidence using our premium platform.
           </p>
 
-          {/* Search Box */}
-          <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl shadow-2xl max-w-4xl flex flex-col md:flex-row gap-4 border border-white/20">
-            <div className="flex-1">
-              <input
-                type="text"
-                placeholder="City, Neighborhood, or Address"
-                className="w-full h-full px-6 py-4 rounded-xl bg-white border border-transparent focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-900 placeholder-slate-400 font-medium"
-              />
-            </div>
-            <div className="w-full md:w-52">
-              <select className="w-full h-full px-6 py-4 rounded-xl bg-white border border-transparent focus:outline-none focus:ring-2 focus:ring-amber-500 text-slate-900 font-medium cursor-pointer">
-                <option>For Sale</option>
-                <option>For Rent</option>
-              </select>
-            </div>
-            <button className="bg-amber-600 text-white px-10 py-4 rounded-xl font-bold hover:bg-amber-700 transition-colors shadow-lg shadow-amber-900/30 uppercase tracking-wide">
-              Search
-            </button>
-          </div>
+
         </div>
       </div>
 

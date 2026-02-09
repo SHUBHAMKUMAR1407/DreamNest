@@ -31,4 +31,13 @@ const subscribe = async (req, res) => {
     }
 };
 
-module.exports = { subscribe };
+const getAllSubscribers = async (req, res) => {
+    try {
+        const subscribers = await Subscriber.find().sort({ createdAt: -1 });
+        res.json(subscribers);
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+};
+
+module.exports = { subscribe, getAllSubscribers };

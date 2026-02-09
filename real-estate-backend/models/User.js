@@ -23,6 +23,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
+    dob: {
+        type: Date,
+    },
 }, { timestamps: true });
 
 module.exports = mongoose.model("User", userSchema);

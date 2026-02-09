@@ -4,6 +4,10 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 const router = express.Router();
+const authMiddleware = require("../middleware/authMiddleware");
+
+router.get("/users", require("../controllers/authController").getAllUsers);
+router.put("/profile", authMiddleware, require("../controllers/authController").updateProfile);
 
 
 router.post("/signup", async (req, res) => {
@@ -32,7 +36,7 @@ router.post("/signup", async (req, res) => {
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRE }
+      { expiresIn: "1d" }
     );
 
     res.status(201).json({
@@ -71,7 +75,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRE }
+      { expiresIn: "1d" }
     );
 
     res.json({

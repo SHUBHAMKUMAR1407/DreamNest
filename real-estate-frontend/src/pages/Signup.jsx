@@ -6,10 +6,12 @@ const Signup = () => {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
+        phone: "",
         password: ""
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState(false);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,7 +23,7 @@ const Signup = () => {
         setError("");
 
         try {
-            const response = await fetch("https://dream-nest-flame.vercel.app/api/auth/signup", {
+            const response = await fetch("http://localhost:5000/api/auth/signup", {
 
                 method: "POST",
                 headers: {
@@ -36,9 +38,11 @@ const Signup = () => {
                 throw new Error(data.message || "Registration failed");
             }
 
-            // Success
-            alert("Registration Successful! Please Login.");
-            navigate("/login");
+            // Success - show message then redirect
+            setSuccess(true);
+            setTimeout(() => {
+                navigate("/login");
+            }, 2500);
         } catch (err) {
             console.error(err);
             setError(err.message || "Something went wrong. Please check your connection.");
@@ -93,6 +97,19 @@ const Signup = () => {
                         </div>
                     )}
 
+                    {success && (
+                        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center">
+                            <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl font-semibold text-slate-800 mb-2">Registration Complete</h3>
+                            <p className="text-slate-600 text-sm">You have successfully completed your registration.</p>
+                            <p className="text-slate-500 text-xs mt-3">Redirecting to login...</p>
+                        </div>
+                    )}
+
                     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                         <div className="space-y-4">
                             <div>
@@ -121,6 +138,25 @@ const Signup = () => {
                                     className="block w-full px-4 py-3 rounded-lg border border-gray-300 text-slate-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all bg-white hover:border-amber-400"
                                     placeholder="you@company.com"
                                 />
+                            </div>
+
+                            <div>
+                                <label htmlFor="phone" className="block text-sm font-bold text-slate-700 mb-1">Phone Number</label>
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span className="text-slate-500 font-bold border-r border-gray-300 pr-2">+91</span>
+                                    </div>
+                                    <input
+                                        id="phone"
+                                        name="phone"
+                                        type="tel"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        className="block w-full pl-14 pr-4 py-3 rounded-lg border border-gray-300 text-slate-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all bg-white hover:border-amber-400"
+                                        placeholder="98765 43210"
+                                        maxLength="10"
+                                    />
+                                </div>
                             </div>
 
                             <div>

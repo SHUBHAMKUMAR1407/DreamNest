@@ -1,14 +1,26 @@
 const express = require("express");
-const auth = require("../middleware/authMiddleware");
-
 const router = express.Router();
+const propertyController = require("../controllers/propertyController");
+const authMiddleware = require("../middleware/authMiddleware");
+const { admin } = require("../middleware/adminMiddleware"); // Destructure admin from export
+const multer = require("multer");
 
-// Public route for testing (or protect later)
-router.post("/", require("../controllers/propertyController").createProperty);
+// Configure Multer (Memory Storage)
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-router.get("/", require("../controllers/propertyController").getAllProperties);
-router.get("/:id", require("../controllers/propertyController").getPropertyById);
-router.delete("/:id", require("../controllers/propertyController").deleteProperty);
+// Public Routes
+router.get("/", propertyController.getAllProperties);
+router.get("/:id", propertyController.getPropertyById);
+
+// Protected Routes
+router.post("/", authMiddleware, upload.array("images", 5), propertyController.createProperty);
+router.get("/user/my-properties", authMiddleware, propertyController.getUserProperties);
+router.put("/:id", authMiddleware, upload.array("images", 5), propertyController.updateProperty);
+router.delete("/:id", authMiddleware, propertyController.deleteProperty);
+
+// Admin Routes
+router.put("/:id/approve", authMiddleware, admin, propertyController.approveProperty);
 
 module.exports = router;
 

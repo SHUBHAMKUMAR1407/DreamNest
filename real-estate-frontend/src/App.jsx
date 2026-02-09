@@ -6,9 +6,11 @@ import Listings from "./pages/Listings";
 import PropertyDetails from "./pages/PropertyDetails";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Profile from "./pages/Profile";
 import ForgotPassword from "./pages/ForgotPassword";
 import AddProperty from "./pages/AddProperty";
-import AdminDashboard from "./pages/AdminDashboard";
+import EditProperty from "./pages/EditProperty";
+
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import ScrollToTop from "./components/ScrollToTop";
@@ -25,8 +27,10 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/add-property" element={<AddProperty />} />
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/edit-property/:id" element={<EditProperty />} />
+
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<ContactUs />} />
       </Routes>

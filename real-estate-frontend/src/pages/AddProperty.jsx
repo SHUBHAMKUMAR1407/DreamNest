@@ -12,12 +12,16 @@ const AddProperty = () => {
     furnishing: "Unfurnished",
     description: "",
   });
+  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value }); // Handle standard inputs
-    // For selects, target.value works fine.
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleImageChange = (e) => {
+    setImages(e.target.files);
   };
 
   const handleSubmit = async (e) => {
@@ -25,37 +29,55 @@ const AddProperty = () => {
     setLoading(true);
     setMessage(null);
 
-    // Basic Validation
+    // Bagic Validation
     if (!formData.title || !formData.price || !formData.location || !formData.sqft || !formData.description) {
       setMessage({ type: "error", text: "Please fill in all required fields." });
       setLoading(false);
       return;
     }
 
-    try {
-      // Parse numeric values
-      const payload = {
-        ...formData,
-        price: Number(formData.price),
-        sqft: Number(formData.sqft),
-        beds: parseInt(formData.beds), // Extract number from "1 BHK"
-        baths: parseInt(formData.baths),
-        // Adding dummy images for now as image upload is complex
-        images: ["/images/house1.jpg", "/images/house2.jpg"]
-      };
+    if (images.length === 0) {
+      setMessage({ type: "error", text: "Please upload at least one image." });
+      setLoading(false);
+      return;
+    }
 
-      const response = await fetch("https://dream-nest-flame.vercel.app/api/properties", {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setMessage({ type: "error", text: "You must be logged in to list a property." });
+        setLoading(false);
+        return;
+      }
+
+      const data = new FormData();
+      data.append("title", formData.title);
+      data.append("price", Number(formData.price));
+      data.append("type", formData.type);
+      data.append("location", formData.location);
+      data.append("beds", parseInt(formData.beds));
+      data.append("baths", parseInt(formData.baths));
+      data.append("sqft", Number(formData.sqft));
+      data.append("furnishing", formData.furnishing);
+      data.append("description", formData.description);
+
+      for (let i = 0; i < images.length; i++) {
+        data.append("images", images[i]);
+      }
+
+      const response = await fetch("http://localhost:5000/api/properties", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+          // Content-Type is set automatically with FormData
         },
-        body: JSON.stringify(payload),
+        body: data,
       });
 
-      const data = await response.json();
+      const resData = await response.json();
 
       if (response.ok) {
-        setMessage({ type: "success", text: "Property list successfully!" });
+        setMessage({ type: "success", text: "Property listed successfully! Waiting for Admin Approval." });
         setFormData({
           title: "",
           price: "",
@@ -67,9 +89,10 @@ const AddProperty = () => {
           furnishing: "Unfurnished",
           description: "",
         });
+        setImages([]);
         window.scrollTo(0, 0);
       } else {
-        setMessage({ type: "error", text: data.message || "Something went wrong." });
+        setMessage({ type: "error", text: resData.message || "Something went wrong." });
       }
     } catch (error) {
       console.error("Error adding property:", error);
@@ -275,22 +298,27 @@ const AddProperty = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Property Images</label>
-                  <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-stone-300 border-dashed rounded-xl hover:border-amber-500 hover:bg-amber-50/10 transition-all bg-stone-50 group cursor-pointer">
+                  <label className="block text-sm font-bold text-slate-700 mb-1">Property Images (Max 5)</label>
+                  <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-stone-300 border-dashed rounded-xl hover:border-amber-500 hover:bg-amber-50/10 transition-all bg-stone-50 group cursor-pointer relative">
                     <div className="space-y-1 text-center">
                       <svg className="mx-auto h-12 w-12 text-slate-400 group-hover:text-amber-500 transition-colors transform group-hover:scale-110 duration-300" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                         <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                       <div className="flex text-sm text-slate-600 justify-center">
                         <label htmlFor="file-upload" className="relative cursor-pointer bg-transparent rounded-md font-medium text-amber-600 hover:text-amber-700 focus-within:outline-none">
-                          <span>Upload a file</span>
-                          <input id="file-upload" name="file-upload" type="file" className="sr-only" multiple />
+                          <span>Upload files</span>
+                          <input id="file-upload" name="images" type="file" className="sr-only" multiple onChange={handleImageChange} accept="image/*" />
                         </label>
                         <p className="pl-1">or drag and drop</p>
                       </div>
                       <p className="text-xs text-slate-500">
-                        PNG, JPG, GIF up to 10MB
+                        PNG, JPG, GIF up to 5MB
                       </p>
+                      {images.length > 0 && (
+                        <p className="text-sm text-green-600 font-bold mt-2">
+                          {images.length} files selected
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>

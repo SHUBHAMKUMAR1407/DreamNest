@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 // Register a new user
 exports.register = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
+        const { name, email, password, role, phone } = req.body;
 
         // Check if user exists
         const userExists = await User.findOne({ email });
@@ -22,7 +22,8 @@ exports.register = async (req, res) => {
             name,
             email,
             password: hashedPassword,
-            role: role || "user"
+            role: role || "user",
+            phone: phone || ""
         });
 
         if (user) {
@@ -92,6 +93,51 @@ exports.resetPassword = async (req, res) => {
         res.json({ message: "Password reset successfully" });
     } catch (error) {
         console.error(error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+// Get all users
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find().select("-password");
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+// Update User Profile
+exports.updateProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        user.name = req.body.name || user.name;
+        user.email = req.body.email || user.email;
+        user.phone = req.body.phone || user.phone;
+        user.dob = req.body.dob || user.dob;
+
+        if (req.body.password) {
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hash(req.body.password, salt);
+        }
+
+        const updatedUser = await user.save();
+
+        res.json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            phone: updatedUser.phone,
+            dob: updatedUser.dob,
+            role: updatedUser.role,
+            token: generateToken(updatedUser._id, updatedUser.role),
+        });
+    } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
