@@ -8,7 +8,7 @@ DreamNest is a modern, full-stack real estate application designed to connect bu
 
 - **Main Website:** [https://dream-nest-rr14.vercel.app](https://dream-nest-rr14.vercel.app)
 - **Admin Panel:** [https://dream-nest-fbf8.vercel.app](https://dream-nest-fbf8.vercel.app)
-- **Backend API:** [https://dream-nest-jlxd7ki7k-shubhamkumar1407s-projects.vercel.app](https://dream-nest-jlxd7ki7k-shubhamkumar1407s-projects.vercel.app)
+
 
 ## ✨ Features
 
