@@ -65,7 +65,7 @@ const AddProperty = () => {
         data.append("images", images[i]);
       }
 
-      const response = await fetch("http://localhost:5000/api/properties", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/properties`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`
