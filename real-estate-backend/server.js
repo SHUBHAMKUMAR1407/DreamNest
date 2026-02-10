@@ -17,7 +17,7 @@ app.use(express.json()); // Body parser
 
 // CORS Configuration
 app.use(cors({
-  origin: function(origin, callback) {
+  origin: function (origin, callback) {
     // Allow all origins
     callback(null, true);
   },
@@ -28,7 +28,7 @@ app.use(cors({
 }));
 
 // Handle preflight requests
-app.options('*', cors());
+// app.options('*', cors()); // Removed to fix PathError: Missing parameter name at index 1
 
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));
@@ -39,11 +39,11 @@ app.use("/api/subscribe", require("./routes/subscriberRoutes"));
 
 // Root Route
 app.get("/", (req, res) => {
-    res.send("Real Estate API is running...");
+  res.send("Real Estate API is running...");
 });
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

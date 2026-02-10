@@ -1,93 +1,97 @@
-# DreamNest - Real Estate Application
+# DreamNest - Premium Real Estate Platform
 
-DreamNest is a modern Real Estate platform designed to connect buyers, sellers, and agents. It features a robust backend API and a responsive React frontend.
+![DreamNest Banner](https://images.unsplash.com/photo-1600596542815-22b48533f418?q=80&w=2500&auto=format&fit=crop)
 
-## 🚀 Features
+DreamNest is a modern, full-stack real estate application designed to connect buyers, sellers, and agents. It features a stunning, responsive frontend for users to browse listings and a powerful admin dashboard for managing properties and inquiries.
 
-- **User Authentication**: Secure signup and login functionality.
-- **Property Listings**: Browse, add, and manage real estate properties.
-- **Inquiries**: Contact agents directly through the platform.
-- **Responsive Design**: Built with TailwindCSS for a seamless mobile and desktop experience.
+## 🚀 Live Demo
+
+- **Main Website:** [https://dream-nest-rr14.vercel.app](https://dream-nest-rr14.vercel.app)
+- **Admin Panel:** [https://dream-nest-fbf8.vercel.app](https://dream-nest-fbf8.vercel.app)
+- **Backend API:** [https://dream-nest-jlxd7ki7k-shubhamkumar1407s-projects.vercel.app](https://dream-nest-jlxd7ki7k-shubhamkumar1407s-projects.vercel.app)
+
+## ✨ Features
+
+### User Features (Main Website)
+- **Property Listings:** Browse a wide range of properties with advanced filtering options.
+- **Property Details:** View detailed information, high-quality images, and location maps.
+- **Inquiry System:** Contact agents directly through the platform.
+- **User Authentication:** Secure signup and login functionality.
+- **Add Property:** Users can list their own properties (pending admin approval).
+- **Profile Management:** Update personal details and manage listed properties.
+- **Responsive Design:** Optimized for seamless experience on desktop, tablet, and mobile.
+
+### Admin Features (Admin Dashboard)
+- **Dashboard Overview:** Real-time statistics on users, listings, and inquiries.
+- **Property Management:** Approve, reject, or delete property listings.
+- **User Management:** View registered users and their roles.
+- **Inquiry Tracking:** Monitor and manage customer inquiries.
+- **Secure Access:** Protected routes ensuring only authorized admins can access the panel.
 
 ## 🛠️ Tech Stack
 
-### Backend
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: MongoDB (with Mongoose)
-- **Authentication**: JSON Web Tokens (JWT) & bcryptjs
-- **Image Handling**: Cloudinary & Multer (Dependency included)
-
-### Frontend
-- **Framework**: React (Vite)
-- **Styling**: TailwindCSS
-- **Routing**: React Router DOM
-
-## ⚙️ Installation & Setup
-
-### Prerequisites
-- [Node.js](https://nodejs.org/) (v16+ recommended)
-- [MongoDB](https://www.mongodb.com/) (Local or AtlasURI)
-
-### 1. Clone the Repository
-```bash
-git clone <repository-url>
-cd "REAL ESTATE"
-```
-
-### 2. Backend Setup
-Navigate to the backend directory and install dependencies:
-```bash
-cd real-estate-backend
-npm install
-```
-
-**Environment Variables:**
-Create a `.env` file in the `real-estate-backend` directory with the following variables:
-```env
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
-JWT_EXPIRE=30d
-```
-
-**Run the Backend:**
-```bash
-# Development mode (with nodemon)
-npm run dev
-
-# Production mode
-npm start
-```
-The server will start on `http://localhost:5000`.
-
-### 3. Frontend Setup
-Navigate to the frontend directory and install dependencies:
-```bash
-cd ../real-estate-frontend
-npm install
-```
-
-**Run the Frontend:**
-```bash
-npm run dev
-```
-The application will be available at `http://localhost:2173` (or the port shown in your terminal).
+- **Frontend:** React.js, Tailwind CSS, Vite
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB (Atlas)
+- **Authentication:** JWT (JSON Web Tokens)
+- **Image Storage:** Cloudinary
+- **Deployment:** Vercel (Frontend & Admin), Render/Vercel (Backend)
 
 ## 📂 Project Structure
 
 ```
-REAL ESTATE/
-├── real-estate-backend/   # Express API and Database logic
-│   ├── config/            # Database configuration
-│   ├── controllers/       # Route logic
-│   ├── models/            # Mongoose schemas
-│   ├── routes/            # API endpoints
-│   └── server.js          # Entry point
-│
-└── real-estate-frontend/  # React Application
-    ├── src/               # Source code
-    │   ├── components/    # Reusable UI components
-    │   └── pages/         # Application pages
-    └── vite.config.js     # Vite configuration
+DreamNest/
+├── real-estate-frontend/   # Main User Website
+├── real-estate-admin/      # Admin Dashboard Management
+└── real-estate-backend/    # Node.js API Server
 ```
+
+## ⚙️ Installation & Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/shubhamkumar1407/DreamNest.git
+   cd DreamNest
+   ```
+
+2. **Backend Setup**
+   ```bash
+   cd real-estate-backend
+   npm install
+   # Create a .env file and add:
+   # MONGO_URI=your_mongodb_connection_string
+   # JWT_SECRET=your_jwt_secret
+   # CLOUDINARY_CLOUD_NAME=your_cloud_name
+   # CLOUDINARY_API_KEY=your_api_key
+   # CLOUDINARY_API_SECRET=your_api_secret
+   npm start
+   ```
+
+3. **Frontend Setup**
+   ```bash
+   cd ../real-estate-frontend
+   npm install
+   # Create a .env file and add:
+   # VITE_API_URL=http://localhost:5000 (or your live backend URL)
+   npm run dev
+   ```
+
+4. **Admin Panel Setup**
+   ```bash
+   cd ../real-estate-admin
+   npm install
+   # Create a .env file and add:
+   # VITE_API_URL=http://localhost:5000 (or your live backend URL)
+   npm run dev
+   ```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+Developed with ❤️ by [Shubham Kumar](https://github.com/shubhamkumar1407)
