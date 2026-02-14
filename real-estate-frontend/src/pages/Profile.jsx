@@ -19,23 +19,64 @@ const Profile = () => {
     const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
     useEffect(() => {
-        const storedUser = localStorage.getItem("user");
-        if (!storedUser) {
-            navigate("/login");
-            return;
-        }
+        const fetchProfile = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    navigate("/login");
+                    return;
+                }
 
-        const userData = JSON.parse(storedUser);
-        setUser(userData);
-        setFormData({
-            name: userData.name,
-            email: userData.email,
-            phone: userData.phone || "",
-            dob: userData.dob ? new Date(userData.dob).toISOString().split('T')[0] : "",
-            password: ""
-        });
-        setLoading(false);
-    }, [navigate]);
+                const res = await fetch(`${API_URL}/api/auth/profile`, {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+
+                if (res.ok) {
+                    const userData = await res.json();
+                    setUser(userData);
+                    // Update local storage with fresh data
+                    localStorage.setItem("user", JSON.stringify(userData));
+
+                    setFormData({
+                        name: userData.name,
+                        email: userData.email,
+                        phone: userData.phone || "",
+                        dob: userData.dob ? new Date(userData.dob).toISOString().split('T')[0] : "",
+                        password: ""
+                    });
+                } else {
+                    // Fallback to local storage if API fails, or redirect
+                    const storedUser = localStorage.getItem("user");
+                    if (storedUser) {
+                        const userData = JSON.parse(storedUser);
+                        setUser(userData);
+                        setFormData({
+                            name: userData.name,
+                            email: userData.email,
+                            phone: userData.phone || "",
+                            dob: userData.dob ? new Date(userData.dob).toISOString().split('T')[0] : "",
+                            password: ""
+                        });
+                    } else {
+                        navigate("/login");
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch profile:", error);
+                // Fallback attempt
+                const storedUser = localStorage.getItem("user");
+                if (storedUser) {
+                    setUser(JSON.parse(storedUser));
+                } else {
+                    navigate("/login");
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProfile();
+    }, [navigate, API_URL]);
 
     const handleChange = (e) => {
         setFormData({

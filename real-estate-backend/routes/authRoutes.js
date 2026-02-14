@@ -8,6 +8,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 router.get("/users", require("../controllers/authController").getAllUsers);
 router.put("/profile", authMiddleware, require("../controllers/authController").updateProfile);
+router.get("/profile", authMiddleware, require("../controllers/authController").getProfile);
 
 
 
@@ -48,6 +49,8 @@ router.post("/signup", async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
+        dob: user.dob,
         role: user.role,
       },
     });
@@ -87,6 +90,8 @@ router.post("/login", async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
+        dob: user.dob,
         role: user.role,
       },
     });
