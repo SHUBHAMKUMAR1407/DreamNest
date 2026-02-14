@@ -6,7 +6,7 @@ const User = require("../models/User");
 const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
 
-router.get("/users", require("../controllers/authController").getAllUsers);
+router.get("/users", authMiddleware, require("../controllers/authController").getAllUsers);
 router.put("/profile", authMiddleware, require("../controllers/authController").updateProfile);
 router.get("/profile", authMiddleware, require("../controllers/authController").getProfile);
 

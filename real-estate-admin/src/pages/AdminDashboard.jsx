@@ -50,11 +50,31 @@ const AdminDashboard = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+
+      const headers = {
+        "Authorization": `Bearer ${token}`
+      };
+
+      const handleResponse = async (res) => {
+        if (res.status === 401) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          navigate("/login");
+          throw new Error("Session expired. Please login again.");
+        }
+        return res;
+      };
+
       // Fetch all data in parallel
       const [usersRes, propsRes, inquiriesRes] = await Promise.all([
-        fetch(`${API_URL}/api/auth/users`),
-        fetch(`${API_URL}/api/properties?admin=true`), // Ensure admin=true is passed
-        fetch(`${API_URL}/api/inquiries`)
+        fetch(`${API_URL}/api/auth/users`, { headers }).then(handleResponse),
+        fetch(`${API_URL}/api/properties?admin=true`, { headers }).then(handleResponse), // Ensure admin=true is passed
+        fetch(`${API_URL}/api/inquiries`, { headers }).then(handleResponse)
       ]);
 
       const usersData = await usersRes.json();
