@@ -179,13 +179,8 @@ const Navbar = () => {
               <Link to="/login" className={`font-medium transition-colors hover:scale-105 ${showSolidNavbar ? "text-slate-600 hover:text-amber-700" : "text-white/90 hover:text-white"}`}>
                 Login
               </Link>
-              <Link to="/signup">
-                <button className={`px-6 py-2.5 rounded-full font-bold transition-all transform hover:scale-105 active:scale-95 ${showSolidNavbar
-                  ? "bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-900/20"
-                  : "bg-white text-slate-900 hover:bg-gray-100 hover:shadow-xl"
-                  }`}>
-                  Sign Up
-                </button>
+              <Link to="/signup" className={`font-medium transition-colors hover:scale-105 ${showSolidNavbar ? "text-slate-600 hover:text-amber-700" : "text-white/90 hover:text-white"}`}>
+                Sign Up
               </Link>
             </div>
           )}
