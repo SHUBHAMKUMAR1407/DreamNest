@@ -1,6 +1,6 @@
 # 🏡 DreamNest - Premium Real Estate Platform
 
-![DreamNest Banner](https://images.unsplash.com/photo-1600596542815-22b48533f418?q=80&w=2500&auto=format&fit=crop)
+
 
 <div align="center">
 
